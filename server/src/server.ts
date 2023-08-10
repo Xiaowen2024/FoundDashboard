@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
+import axios from "axios";
 import { connectToDatabase } from "./database";
 import { employeeRouter } from "./employee.routes";
 import { mainRouter } from "./main.routes";

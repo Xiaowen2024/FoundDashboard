@@ -16,6 +16,7 @@ export async function connectToDatabase(uri: string) {
     const db = client.db("meanStackExample");
     const db2 = client.db("test");
     await applySchemaValidation(db);
+    await applySchemaValidation(db2);
  
     const employeesCollection = db.collection<Employee>("employees");
     const tradesCollection = db2.collection<Trade>("tradingHistory");
@@ -69,6 +70,15 @@ async function applySchemaValidation(db: mongodb.Db) {
     }).catch(async (error: mongodb.MongoServerError) => {
         if (error.codeName === "NamespaceNotFound") {
             await db.createCollection("feedback", {validator: jsonSchema});
+        }
+    });
+
+    await db.command({
+        collMod: "tradingHistory",
+        validator: jsonSchema
+    }).catch(async (error: mongodb.MongoServerError) => {
+        if (error.codeName === "NamespaceNotFound") {
+            await db.createCollection("tradingHistory", {validator: jsonSchema});
         }
     });
 }
