@@ -7,6 +7,8 @@ import { employeeRouter } from "./employee.routes";
 import { mainRouter } from "./main.routes";
 import { signinRouter } from "./signin.routes";
 import { feedbackRouter } from "./feedback.routes";
+import { cryptoRouter } from "./crypto.routes";
+import { tradingHistoryRouter } from "./trading.history.routes";
 
 // Load environment variables from the .env file, where the ATLAS_URI is configured
 dotenv.config();
@@ -26,6 +28,8 @@ connectToDatabase(ATLAS_URI)
         app.use('/main', mainRouter);
         app.use('/signin', signinRouter);
         app.use('/feedbackList', feedbackRouter);
+        app.use('/crypto', cryptoRouter);
+        app.use('/trades', tradingHistoryRouter);
           
         app.listen(5200, () => {
             console.log(`Server running at http://localhost:5200...`);

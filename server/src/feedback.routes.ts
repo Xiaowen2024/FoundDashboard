@@ -23,10 +23,10 @@ feedbackRouter.get("/:id", async (req, res) => {
         if (feedback) {
             res.status(200).send(feedback);
         } else {
-            res.status(404).send(`Failed to find an employee: ID ${id}`);
+            res.status(404).send(`Failed to find feedback: ID ${id}`);
         }
     } catch (error) {
-        res.status(404).send(`Failed to find an employee: ID ${req?.params?.id}`);
+        res.status(404).send(`Failed to find feedback: ID ${req?.params?.id}`);
     }
 });
 
@@ -36,9 +36,9 @@ feedbackRouter.post("/", async (req, res) => {
         const result = await collections.feedback.insertOne(feedback);
 
         if (result.acknowledged) {
-            res.status(201).send(`Created a new employee: ID ${result.insertedId}.`);
+            res.status(201).send(`Created a new feedback: ID ${result.insertedId}.`);
         } else {
-            res.status(500).send("Failed to create a new employee.");
+            res.status(500).send("Failed to create new feedback.");
         }
     } catch (error) {
         console.error(error);
@@ -56,9 +56,9 @@ feedbackRouter.put("/:id", async (req, res) => {
         if (result && result.matchedCount) {
             res.status(200).send(`Updated an employee: ID ${id}.`);
         } else if (!result.matchedCount) {
-            res.status(404).send(`Failed to find an employee: ID ${id}`);
+            res.status(404).send(`Failed to find feedback: ID ${id}`);
         } else {
-            res.status(304).send(`Failed to update an employee: ID ${id}`);
+            res.status(304).send(`Failed to update feedback: ID ${id}`);
         }
     } catch (error) {
         console.error(error.message);
@@ -75,12 +75,13 @@ feedbackRouter.delete("/:id", async (req, res) => {
         if (result && result.deletedCount) {
             res.status(202).send(`Removed an employee: ID ${id}`);
         } else if (!result) {
-            res.status(400).send(`Failed to remove an employee: ID ${id}`);
+            res.status(400).send(`Failed to remove feedback: ID ${id}`);
         } else if (!result.deletedCount) {
-            res.status(404).send(`Failed to find an employee: ID ${id}`);
+            res.status(404).send(`Failed to find feedbacks: ID ${id}`);
         }
     } catch (error) {
         console.error(error.message);
         res.status(400).send(error.message);
     }
 });
+

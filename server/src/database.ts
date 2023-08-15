@@ -2,11 +2,13 @@ import * as mongodb from "mongodb";
 import { Employee } from "./employee";
 import { Trade } from "./trade";
 import { Feedback } from "./feedback";
+import { TradeData} from "./tradeData";
 
 export const collections: {
     employees?: mongodb.Collection<Employee>;
     tradingHistory?: mongodb.Collection<Trade>;
     feedback?: mongodb.Collection<Feedback>;
+    crypto?:mongodb.Collection<TradeData>;
 } = {};
 
 export async function connectToDatabase(uri: string) {
@@ -14,16 +16,15 @@ export async function connectToDatabase(uri: string) {
     await client.connect();
 
     const db = client.db("meanStackExample");
-    const db2 = client.db("test");
     await applySchemaValidation(db);
-    await applySchemaValidation(db2);
- 
     const employeesCollection = db.collection<Employee>("employees");
-    const tradesCollection = db2.collection<Trade>("tradingHistory");
+    const tradesCollection = db.collection<Trade>("tradingHistory");
     const feedbackCollection = db.collection<Feedback>("feedback");
+    const cryptoCollection = db.collection<TradeData>("cryptoAssets");
     collections.employees = employeesCollection;
     collections.tradingHistory = tradesCollection;
     collections.feedback = feedbackCollection;
+    collections.crypto = cryptoCollection;
 }
 
 // Update our existing collection with JSON schema validation so we know our documents will always match the shape of our Employee model, even if added elsewhere.
@@ -79,6 +80,15 @@ async function applySchemaValidation(db: mongodb.Db) {
     }).catch(async (error: mongodb.MongoServerError) => {
         if (error.codeName === "NamespaceNotFound") {
             await db.createCollection("tradingHistory", {validator: jsonSchema});
+        }
+    });
+    
+    await db.command({
+        collMod: "crypto",
+        validator: jsonSchema
+    }).catch(async (error: mongodb.MongoServerError) => {
+        if (error.codeName === "NamespaceNotFound") {
+            await db.createCollection("crypto", {validator: jsonSchema});
         }
     });
 }
