@@ -30,5 +30,6 @@ Other tools and technologies used:
 A window will automatically open at [localhost:4200](http://localhost:4200). Angular and Express files are being watched. Any change automatically creates a new bundle, restart Express server and reload your browser.
 
 ## Preview
+![Preview](https://github.com/Xiaowen2024/FoundDashboard/blob/main/assets/home.gif)
 ![Preview](https://github.com/Xiaowen2024/MEAN-StackTradingDashboard/blob/main/strategy.gif)
 ![Preview](https://github.com/Xiaowen2024/MEAN-StackTradingDashboard/blob/main/trade.gif)
